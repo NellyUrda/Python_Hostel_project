@@ -1,4 +1,5 @@
 import tkinter.messagebox
+from tkcalendar import *
 from tkinter import *
 from tkinter.ttk import Treeview
 import mysql.connector
@@ -23,9 +24,12 @@ class AvailabilityPage:
         self.roomNr_entry = Entry(master)
         self.roomNr_entry.place(x=30, y=140, width=550, height=20)
 
-        self.checkIn_label = Label(master, text="Check-in-date(yyyy-mm-dd)", font=("Ariel", 10, "bold"), fg="black",
+        self.checkIn_label = Label(master, text="Check-in-date", font=("Ariel", 10, "bold"), fg="black",
                                    bg="#42b3f5")
-        self.checkIn_label.place(x=30, y=160, width=180, height=20)
+        self.checkIn_label.place(x=30, y=160, width=100, height=20)
+
+        cal_button = Button(master, text="Calendar", font=("Ariel", 10), command=self.pick_date)
+        cal_button.place(x=130, y=160, width=70, height=20)
 
         self.checkIn_entry = Entry(master)
         self.checkIn_entry.place(x=30, y=180, width=550, height=20)
@@ -41,6 +45,20 @@ class AvailabilityPage:
         self.treeview.heading(2, text="Check-in-date")
         self.treeview.heading(3, text="Check-out-date")
         self.treeview.pack()
+
+    # Calendar
+    # pick the date from calendar and show it in to the entry box
+    def pick_date(self):
+        def get_date(event):
+            self.checkIn_entry.delete(0, END)
+
+            date = cal.get_date()
+            self.checkIn_entry.insert(0, date)
+            cal.destroy()
+
+        cal = Calendar(self.master, selectmode="day", year=2022, month=11, day=9, date_pattern="YYYY-MM-DD")
+        cal.bind("<<CalendarSelected>>", get_date)
+        cal.pack()
 
     # Check Room button
     # we check in the database if the room is booked or not in the specified date

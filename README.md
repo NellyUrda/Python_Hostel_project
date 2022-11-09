@@ -2,10 +2,13 @@
 
 This is an application using GUI and MySql database. In this application, we can make registrations and reservations at a hostel. Before making anny booking, we can check if a room is booked or not in the specified date. All reservations can be seen.
 
-![hotel_1](https://user-images.githubusercontent.com/116946235/200660065-72114e06-9de4-443f-9405-9f955c51cb95.png)
+![Hostel_update_1](https://user-images.githubusercontent.com/116946235/200816086-c8980700-2c5d-4c60-9951-9ecceeafb74f.png)
 
-![hotel_2](https://user-images.githubusercontent.com/116946235/200660092-2d89dddc-0e55-4a2a-8990-424718449c40.png)
+![Hostel_update_2](https://user-images.githubusercontent.com/116946235/200816111-45a2432f-7535-4010-aa77-80d22f912a00.png)
 
-![hotel_3](https://user-images.githubusercontent.com/116946235/200660112-29600264-4051-4d75-a82f-5787180aa40d.png)
+![Hostel_update_3](https://user-images.githubusercontent.com/116946235/200816153-8883ced8-a6ce-41d4-94cb-c6f9ea9f159b.png)
 
-![hotel_4](https://user-images.githubusercontent.com/116946235/200660135-03465e58-6c15-4adb-9a47-cbb228b8f24c.png)
+![Hostel_update_4](https://user-images.githubusercontent.com/116946235/200816190-36641536-0583-472e-8447-8f495a114335.png)
+
+
+

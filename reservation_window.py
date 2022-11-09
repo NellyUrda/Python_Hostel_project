@@ -1,3 +1,4 @@
+from tkcalendar import *
 from tkinter import *
 from tkinter import ttk
 import mysql.connector
@@ -58,23 +59,29 @@ class ReservationPage:
         self.room_price_entry = Entry(master)
         self.room_price_entry.place(x=415, y=270, width=115, height=20)
 
-        self.checkin_label = Label(master, text="Check-in-date(yyyy-mm-dd)", fg="black", font=("Ariel", 10, 'bold'),
+        self.checkin_label = Label(master, text="Check-in-date", fg="black", font=("Ariel", 10, 'bold'),
                                    bg="#42b3f5")
-        self.checkin_label.place(x=35, y=290, width=170, height=20)
+        self.checkin_label.place(x=30, y=290, width=100, height=20)
+
+        cal1_button = Button(master, text="Calendar", font=("Ariel", 10), command=self.check_in_date)
+        cal1_button.place(x=150, y=290, width=115, height=20)
 
         self.checkin_entry = Entry(master)
         self.checkin_entry.place(x=30, y=310, width=235, height=20)
 
-        self.checkout_label = Label(master, text="Check-out-date(yyyy-mm-dd)", fg="black", font=("Ariel", 10, 'bold'),
+        self.checkout_label = Label(master, text="Check-out-date ", fg="black", font=("Ariel", 10, 'bold'),
                                     bg="#42b3f5")
-        self.checkout_label.place(x=265, y=290, width=235, height=20)
+        self.checkout_label.place(x=290, y=290, width=100, height=20)
+
+        cal2_button = Button(master, text="Calendar", font=("Ariel", 10), command=self.check_out_date)
+        cal2_button.place(x=415, y=290, width=115, height=20)
 
         self.checkout_entry = Entry(master)
         self.checkout_entry.place(x=295, y=310, width=235, height=20)
 
-        self.nrnights_label = Label(master, text="Nr Nights", fg="black", font=("Ariel", 10, 'bold'),
-                                    bg="#42b3f5")
-        self.nrnights_label.place(x=25, y=330, width=100, height=20)
+        self.nrnights_button = Button(master, text="Nr Nights", fg="black",
+                                      font=("Ariel", 10, 'bold'), command=self.calculate_nr_nights)
+        self.nrnights_button.place(x=30, y=330, width=100, height=20)
 
         self.nights_entry = Entry(master)
         self.nights_entry.place(x=30, y=350, width=235, height=20)
@@ -153,6 +160,58 @@ class ReservationPage:
             self.room_price_entry.delete(0, END)
             self.room_price_entry.insert(0, result2)
 
+    # Calendar
+    # we choose from calendar the checkin/checkout dates and show them in the entry boxes
+    def check_in_date(self):
+        def get_date(event):
+            self.checkin_entry.delete(0, END)
+
+            date = cal.get_date()
+            self.checkin_entry.insert(0, date)
+            cal.destroy()
+
+        cal = Calendar(self.master, selectmode="day", year=2022, month=11, day=9, date_pattern="YYYY-MM-DD")
+        cal.bind("<<CalendarSelected>>", get_date)
+        cal.pack()
+
+    def check_out_date(self):
+        def get_date(event):
+            self.checkout_entry.delete(0, END)
+
+            date = cal.get_date()
+            self.checkout_entry.insert(0, date)
+            cal.destroy()
+
+        cal = Calendar(self.master, selectmode="day", year=2022, month=11, day=9, date_pattern="YYYY-MM-DD")
+        cal.bind("<<CalendarSelected>>", get_date)
+        cal.pack()
+
+    # Nr nights button
+    # we calculate the number of nights that client wants to book, using string slicing
+    def calculate_nr_nights(self):
+        try:
+            self.nights_entry.delete(0, END)
+
+            checkin = self.checkin_entry.get()
+            checkout = self.checkout_entry.get()
+            checkin_day = checkin[8:10]
+            checkout_day = checkout[8:10]
+            checkin_m = checkin[5:7]
+            checkout_m = checkout[5:7]
+
+            if checkin_m == checkout_m:
+                nr_nights = int(checkout_day) - int(checkin_day)
+            elif checkin_m in ['01', '03', '05', '07', '08', '10', '12']:
+                nr_nights = 31 - int(checkin_day) + int(checkout_day)
+            elif checkin_m in ['04', '06', '09', '11']:
+                nr_nights = 30 - int(checkin_day) + int(checkout_day)
+            elif checkin_m == '02':
+                nr_nights = 28 - int(checkin_day) + int(checkout_day)
+
+            self.nights_entry.insert(0, nr_nights)
+        except Exception:
+            tkinter.messagebox.showinfo(message=" Choose checkin and checkout dates ")
+
     # Check Room Availability button
     # opens room availability page were we check if a room is booked or not
     def check_availability(self):
@@ -199,4 +258,3 @@ class ReservationPage:
         window = Tk()
         from all_reservations_window import ArchivePage
         ArchivePage(window)
-
